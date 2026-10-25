@@ -58,7 +58,8 @@ def check_content_type(content_type):
     if request.headers["Content-Type"] == content_type:
         return
 
-    app.logger.error("Invalid Content-Type: %s", request.headers["Content-Type"])
+    app.logger.error("Invalid Content-Type: %s",
+                     request.headers["Content-Type"])
     abort(
         status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
         f"Content-Type must be {content_type}",
@@ -142,6 +143,8 @@ def list_products():
 ######################################################################
 # READ A PRODUCT
 ######################################################################
+
+
 @app.route("/products/<int:product_id>", methods=["GET"])
 def get_products(product_id):
     """
@@ -153,7 +156,8 @@ def get_products(product_id):
 
     product = Product.find(product_id)
     if not product:
-        abort(status.HTTP_404_NOT_FOUND, f"Product with id '{product_id}' was not found.")
+        abort(status.HTTP_404_NOT_FOUND,
+              f"Product with id '{product_id}' was not found.")
 
     app.logger.info("Returning product: %s", product.name)
     return product.serialize(), status.HTTP_200_OK
@@ -185,7 +189,8 @@ def update_products(product_id):
 
     product = Product.find(product_id)
     if not product:
-        abort(status.HTTP_404_NOT_FOUND, f"Product with id '{product_id}' was not found.")
+        abort(status.HTTP_404_NOT_FOUND,
+              f"Product with id '{product_id}' was not found.")
 
     product.deserialize(request.get_json())
     product.id = product_id
